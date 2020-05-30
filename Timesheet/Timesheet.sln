@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Core", "Timesheet.Core\Timesheet.Core.csproj", "{1340D369-2AF8-44F7-B0D2-491D96537627}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Api", "Timesheet.Api\Timesheet.Api.csproj", "{9E485A1E-40D5-47F0-8D43-768570FAE2F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1340D369-2AF8-44F7-B0D2-491D96537627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1340D369-2AF8-44F7-B0D2-491D96537627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1340D369-2AF8-44F7-B0D2-491D96537627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1340D369-2AF8-44F7-B0D2-491D96537627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E485A1E-40D5-47F0-8D43-768570FAE2F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E485A1E-40D5-47F0-8D43-768570FAE2F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E485A1E-40D5-47F0-8D43-768570FAE2F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E485A1E-40D5-47F0-8D43-768570FAE2F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA1DEE20-F9A6-4D27-9501-1BABFF56457B}
+	EndGlobalSection
+EndGlobal
