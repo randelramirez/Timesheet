@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/*
+  used by timesheet.tsx
+  this shoud be moved to to the component (style-component or css module)
+*/
+
+.timesheet-entry-enter {
+  opacity: 0;
+}
+.timesheet-entry-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.timesheet-entry-exit {
+  opacity: 1;
+}
+.timesheet-entry-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
