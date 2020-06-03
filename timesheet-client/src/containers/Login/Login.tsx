@@ -1,92 +1,3 @@
-// import React, { useState } from 'react';
-// import { RouteComponentProps } from 'react-router-dom';
-// import Button from '@material-ui/core/Button';
-// import Input from '@material-ui/core/Input';
-
-// type LoginProps = { name: string };
-
-// function Login(props: RouteComponentProps & LoginProps) {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   function onEmailChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-//     setEmail(event.target.value);
-//   }
-
-//   function onPasswordChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-//     setPassword(event.target.value);
-//   }
-
-//   function loginHandler(event: React.MouseEvent): void {
-//     event.preventDefault();
-//     if (email === 'randelramirez1@gmail.com' && password === 'Randel1_23') {
-//       props.history.replace('/main/');
-//     }
-
-//     return;
-//   }
-
-//   return (
-//     <div>
-//       <form>
-//         <div>
-//           <label htmlFor="email">
-//             Email
-//             <span role="img" aria-label="email">
-//               📧
-//             </span>
-//           </label>
-//           {/* <input
-//           type="email"
-//           name="email"
-//           placeholder="Email"
-//           onChange={onEmailChangeHandler}
-//           value={email}
-//         /> */}
-//           <Input
-//             type="email"
-//             name="email"
-//             placeholder="Email"
-//             onChange={onEmailChangeHandler}
-//             value={email}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="password">
-//             Password
-//             <span role="img" aria-label="password">
-//               🔑
-//             </span>
-//           </label>
-//           <input
-//             type="password"
-//             name="password"
-//             onChange={onPasswordChangeHandler}
-//             value={password}
-//           />
-//           {/* <button onClick={loginHandler} type="button">
-//             Login
-//           </button> */}
-//         </div>
-//         <div>
-//           {' '}
-//           <Button
-//             variant="contained"
-//             autoCapitalize="false"
-//             centerRipple
-//             onClick={loginHandler}
-//             color="primary"
-//           >
-//             Login
-//           </Button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default Login;
-
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -220,7 +131,7 @@ function Login(props: RouteComponentProps & LoginProps) {
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
+              color="secondary"
               className={classes.submit}
               onClick={loginHandler}
             >
