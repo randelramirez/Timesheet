@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { TransitionGroup } from 'react-transition-group';
 import TimesheetEntry from '../../components/TimesheetEntry/TimesheetEntry';
 import { v4 as uuid } from 'uuid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import AnimationContainer from '../AnimationContainer/AnimationContainer';
 import axios from 'axios';
 import { getTask } from '../../apiUtility';
+import IsAuthenticated from '../IsAuthenticated/IsAuthenticated';
+import Navigation from '../Navigation/Navigation';
+import SavedNotification from '../../components/UI/Notification/SavedNotification';
 
 export type entry = {
   id: string;
@@ -135,16 +137,22 @@ function Timesheet(props: TimesheetProps) {
   function saveHandler(event: React.MouseEvent) {
     event.preventDefault();
     setIsSnackBarOpen(true);
-    console.table('entries', entries);
+    console.table(entries);
   }
 
-  function snackBarCloseHandler() {
+  function snackBarCloseHandler(event?: React.SyntheticEvent, reason?: string) {
+    console.log(reason);
+    // we received a default value of 'clickaway'
+    if (reason === 'clickaway') {
+      return;
+    } //else reason = timeout, close the snackbar
+
     setIsSnackBarOpen(false);
   }
 
   const controls: JSX.Element[] = entries.map((entry: entry, index: number) => {
     return (
-      <CSSTransition key={entry.id} timeout={500} classNames="timesheet-entry">
+      <AnimationContainer key={entry.id}>
         <TimesheetEntry
           taskOptions={taskOptions || []}
           deleteHandler={(event) => {
@@ -157,54 +165,73 @@ function Timesheet(props: TimesheetProps) {
             taskCodeChangeHandler(event, value, entry.id)
           }
         />
-      </CSSTransition>
+      </AnimationContainer>
     );
   });
 
   return (
-    <div style={{ textAlign: 'center', width: '80%', margin: 'auto' }}>
-      <Button
-        style={{ position: 'relative', right: '-400px', marginTop: '10px' }}
-        variant="contained"
-        color="secondary"
-        size="small"
-        // className={classes.button}
-        startIcon={<AddIcon />}
-        onClick={addHandler}
-      >
-        Add
-      </Button>
-      <form>
-        <fieldset>
-          <legend>Timesheet</legend>
-          {/*use css for styling, remove br */}
-          <br />
-          <br />
-          <br />
-          <TransitionGroup className="timesheet">{controls}</TransitionGroup>
-          <Button
-            style={{ position: 'relative', right: '-400px', marginTop: '10px' }}
-            variant="contained"
-            color="secondary"
-            size="small"
-            // className={classes.button}
-            startIcon={<SaveIcon />}
-            onClick={saveHandler}
-          >
-            Save
-          </Button>
-        </fieldset>
-      </form>
-      <Snackbar
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isSnackBarOpen}
-        onClose={snackBarCloseHandler}
-        key={'Saved'}
-      >
-        <MuiAlert elevation={6} children="Saved" variant="filled" />
-      </Snackbar>
-    </div>
+    <React.Fragment>
+      <IsAuthenticated
+        currentUser={{ userId: 100, username: 'gem' }}
+        isLoggedinRender={<Navigation />}
+        isLoggedoutRender={<div>logged out</div>}
+      />
+      <div style={{ textAlign: 'center', width: '80%', margin: 'auto' }}>
+        <Button
+          style={{ position: 'relative', right: '-400px', marginTop: '10px' }}
+          variant="contained"
+          color="secondary"
+          size="small"
+          // className={classes.button}
+          startIcon={<AddIcon />}
+          onClick={addHandler}
+        >
+          Add
+        </Button>
+        <form>
+          <fieldset>
+            <legend>Timesheet</legend>
+            {/*use css for styling, remove br */}
+            <br />
+            <br />
+            <br />
+            <TransitionGroup className="timesheet">{controls}</TransitionGroup>
+            <Button
+              style={{
+                position: 'relative',
+                right: '-400px',
+                marginTop: '10px',
+              }}
+              variant="contained"
+              color="secondary"
+              size="small"
+              // className={classes.button}
+              startIcon={<SaveIcon />}
+              onClick={saveHandler}
+            >
+              Save
+            </Button>
+          </fieldset>
+        </form>
+
+        <SavedNotification
+          duration={3000}
+          notificationKey={'Saved'}
+          open={isSnackBarOpen}
+          message="Timesheet was saved ☺"
+          onClose={snackBarCloseHandler}
+        />
+        {/* <Snackbar
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isSnackBarOpen}
+          onClose={snackBarCloseHandler}
+          key={'Saved'}
+        >
+          <MuiAlert elevation={6} children="Saved" variant="filled" />
+        </Snackbar> */}
+      </div>
+    </React.Fragment>
   );
 }
 

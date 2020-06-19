@@ -22,7 +22,7 @@ export type TimesheetEntryProps = {
 
 function TimesheetEntry(props: TimesheetEntryProps) {
   return (
-    <div>
+    <div style={{ margin: '5px' }}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           label="Date"
@@ -74,7 +74,7 @@ function TimesheetEntry(props: TimesheetEntryProps) {
       />
 
       <Button
-        style={{ marginRight: '15px' }}
+        style={{ marginRight: '15px', verticalAlign: 'bottom' }}
         variant="contained"
         color="secondary"
         size="small"
