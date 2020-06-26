@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Routing;
 using Timesheet.Api.Services;
 using Timesheet.Api.ViewModels;
 using Timesheet.Api.ViewModels.Extensions;
-using Timesheet.Core;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,7 +34,7 @@ namespace Timesheet.Api.Controllers
             try
             {
                 var timecards = await this.service.GetAllAsync();
-                return Ok(timecards.Select(t => new TimecardViewModel { Id =  t.Id, Date = t.Date, Hours = t.Hours, TaskId = t.TaskId }));
+                return Ok(timecards.ToViewModels());
             }
             catch (Exception)
             {

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Timesheet.Api.Services;
+using Timesheet.Api.ViewModels;
+using Timesheet.Api.ViewModels.Extensions;
 
 namespace Timesheet.Api.Controllers
 {
@@ -24,8 +26,7 @@ namespace Timesheet.Api.Controllers
         public async Task<ActionResult<Core.Task[]>> Get()
         {
             var tasks = await this.service.GetAllAsync();
-         
-            return Ok(tasks);
+            return Ok(tasks.ToViewModels());
         }
     }
 }

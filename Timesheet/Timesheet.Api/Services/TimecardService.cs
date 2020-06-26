@@ -25,7 +25,7 @@ namespace Timesheet.Api.Services
 
         public async Task<IEnumerable<Timecard>> GetAllByDateRange(DateTime fromDate, DateTime toDate)
         {
-            return await this.context.Timecards.Where(t => t.Date <= fromDate && t.Date >= toDate).ToListAsync();
+            return await this.context.Timecards.Where(t => t.Date >= fromDate && t.Date <= toDate).ToListAsync();
         }
 
         public async Task Add(List<Timecard> timecards)

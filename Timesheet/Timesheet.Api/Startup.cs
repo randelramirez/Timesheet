@@ -26,7 +26,7 @@ namespace Timesheet.Api
 
         public IConfiguration Configuration { get; }
 
-        string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private const string specificOrigins = "LOCALHOST";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -42,9 +42,10 @@ namespace Timesheet.Api
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
+                options.AddPolicy(name: specificOrigins,
                         builder =>
-                        {   builder.WithOrigins("https://localhost", "http://localhost:3000");
+                        {   builder.WithOrigins("https://localhost", "http://localhost:3000")
+                                .WithHeaders("Content-Type");
                         });
             });
             services.AddControllers();
@@ -62,7 +63,7 @@ namespace Timesheet.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(specificOrigins);
 
             app.UseAuthorization();
 
