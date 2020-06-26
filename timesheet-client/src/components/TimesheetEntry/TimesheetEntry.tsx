@@ -46,6 +46,7 @@ function TimesheetEntry(props: TimesheetEntryProps) {
           width: 300,
           display: 'inline-block',
           marginRight: '15px',
+          marginTop: '5px',
         }}
         options={props.taskOptions}
         getOptionLabel={(option) => option.name}

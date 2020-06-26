@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import TimesheetEntry from '../../components/TimesheetEntry/TimesheetEntry';
 import { v4 as uuid } from 'uuid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
-import AnimationContainer from '../AnimationContainer/AnimationContainer';
 import axios from 'axios';
-import { getTask } from '../../apiUtility';
+import { task, timecard } from '../../apiUtility';
 import IsAuthenticated from '../IsAuthenticated/IsAuthenticated';
 import Navigation from '../Navigation/Navigation';
 import SavedNotification from '../../components/UI/Notification/SavedNotification';
+import TimesheetEntries from '../../components/TimesheetEntries/TimesheetEntries';
 
 export type entry = {
-  id: string;
-  taskcode: string;
+  id: string | number;
+  taskId: number;
   hours: number;
   date: Date;
 };
@@ -27,11 +26,11 @@ export type task = {
 type TimesheetProps = {};
 
 function Timesheet(props: TimesheetProps) {
-  const [entries, setEntries] = useState([
+  const [entries, setEntries] = useState<entry[]>([
     {
       id: uuid(),
       date: new Date(),
-      taskcode: '',
+      taskId: 0,
       hours: 0,
     },
   ]);
@@ -41,7 +40,7 @@ function Timesheet(props: TimesheetProps) {
 
   useEffect(() => {
     axios
-      .get(getTask)
+      .get(task)
       .then((response) => {
         setTaskOptions(response.data as task[]);
       })
@@ -57,7 +56,7 @@ function Timesheet(props: TimesheetProps) {
       {
         id: uuid(),
         date: new Date(),
-        taskcode: '',
+        taskId: 0,
         hours: 0,
       },
     ];
@@ -98,19 +97,20 @@ function Timesheet(props: TimesheetProps) {
     entryId: string
   ): void {
     console.log('value-taskCodeChangeHandler', task);
-    let updatedEntries = [...entries];
-    let updatedEntry = {
-      ...entries.filter((entry, index) => {
-        return entry.id === entryId;
-      })[0],
-    };
-    updatedEntry.taskcode = task.name; // use id when saving to database
-    updatedEntries = updatedEntries.map((entry, index) => {
+
+    const updatedEntries = entries.map((entry) => {
       if (entry.id === entryId) {
-        entry = updatedEntry;
+        const updatedItem = {
+          ...entry,
+          taskId: task.id,
+        };
+
+        return updatedItem;
       }
+      // else return entry
       return entry;
     });
+
     setEntries(updatedEntries);
   }
 
@@ -119,25 +119,46 @@ function Timesheet(props: TimesheetProps) {
     event: React.ChangeEvent<HTMLInputElement>,
     entryId: string
   ) {
-    let updatedEntry = {
-      ...entries.filter((entry) => entry.id === entryId)[0],
-    };
-    updatedEntry.hours = +event.target.value;
-
-    let updatedEntries = [...entries];
-    updatedEntries = updatedEntries.map((entry) => {
+    const updatedEntries = entries.map((entry) => {
       if (entry.id === entryId) {
-        entry = updatedEntry;
+        const updatedItem = {
+          ...entry,
+          hours: +event.target.value,
+        };
+
+        return updatedItem;
       }
+      // else return entry
       return entry;
     });
+
     setEntries(updatedEntries);
   }
 
   function saveHandler(event: React.MouseEvent) {
     event.preventDefault();
-    setIsSnackBarOpen(true);
-    console.table(entries);
+
+    let entriesToSave: entry[] = entries.map((entry) => {
+      return {
+        id: 0,
+        taskId: entry.taskId,
+        hours: entry.hours,
+        date: entry.date,
+      };
+    });
+
+    axios
+      .post(timecard, entriesToSave, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        setIsSnackBarOpen(true);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
   }
 
   function snackBarCloseHandler(event?: React.SyntheticEvent, reason?: string) {
@@ -149,25 +170,6 @@ function Timesheet(props: TimesheetProps) {
 
     setIsSnackBarOpen(false);
   }
-
-  const controls: JSX.Element[] = entries.map((entry: entry, index: number) => {
-    return (
-      <AnimationContainer key={entry.id}>
-        <TimesheetEntry
-          taskOptions={taskOptions || []}
-          deleteHandler={(event) => {
-            deleteHandler(event, entry.id.toString());
-          }}
-          data={entry}
-          dateChangeHandler={(date: Date) => dateChangeHandler(date, entry.id)}
-          hoursChangeHandler={(event) => hoursChangeHandler(event, entry.id)}
-          taskCodeChangeHandler={(event, value) =>
-            taskCodeChangeHandler(event, value, entry.id)
-          }
-        />
-      </AnimationContainer>
-    );
-  });
 
   return (
     <React.Fragment>
@@ -195,7 +197,17 @@ function Timesheet(props: TimesheetProps) {
             <br />
             <br />
             <br />
-            <TransitionGroup className="timesheet">{controls}</TransitionGroup>
+
+            <TransitionGroup className="timesheet">
+              <TimesheetEntries
+                entries={entries}
+                taskOptions={taskOptions}
+                deleteHandler={deleteHandler}
+                dateChangeHandler={dateChangeHandler}
+                hoursChangeHandler={hoursChangeHandler}
+                taskCodeChangeHandler={taskCodeChangeHandler}
+              />
+            </TransitionGroup>
             <Button
               style={{
                 position: 'relative',
@@ -221,15 +233,6 @@ function Timesheet(props: TimesheetProps) {
           message="Timesheet was saved ☺"
           onClose={snackBarCloseHandler}
         />
-        {/* <Snackbar
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={isSnackBarOpen}
-          onClose={snackBarCloseHandler}
-          key={'Saved'}
-        >
-          <MuiAlert elevation={6} children="Saved" variant="filled" />
-        </Snackbar> */}
       </div>
     </React.Fragment>
   );
