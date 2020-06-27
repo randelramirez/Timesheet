@@ -25,7 +25,7 @@ export type task = {
 
 type TimesheetProps = {};
 
-function Timesheet(props: TimesheetProps) {
+const Timesheet: React.FC = (props: TimesheetProps) => {
   const [entries, setEntries] = useState<entry[]>([
     {
       id: uuid(),
@@ -63,16 +63,16 @@ function Timesheet(props: TimesheetProps) {
     setEntries(updatedEntries);
   }
 
-  function deleteHandler(event: React.MouseEvent, entryId: string) {
+  const deleteHandler = (event: React.MouseEvent, entryId: string) => {
     event.preventDefault();
     let updatedEntries = [...entries];
 
     updatedEntries = updatedEntries.filter((entry, i) => entry.id !== entryId);
     console.log(updatedEntries);
     setEntries(updatedEntries);
-  }
+  };
 
-  function dateChangeHandler(date: Date, entryId: string) {
+  const dateChangeHandler = (date: Date, entryId: string): Date => {
     let updatedEntries = [...entries];
     let updatedEntry = {
       ...entries.filter((entry, index) => {
@@ -88,14 +88,14 @@ function Timesheet(props: TimesheetProps) {
     });
     setEntries(updatedEntries);
     return updatedEntry.date;
-  }
+  };
 
   // Refactor does not need to iterate on all entries for updating
-  function taskCodeChangeHandler(
+  const taskCodeChangeHandler = (
     event: React.ChangeEvent<{}>,
     task: task,
     entryId: string
-  ): void {
+  ) => {
     console.log('value-taskCodeChangeHandler', task);
 
     const updatedEntries = entries.map((entry) => {
@@ -112,13 +112,13 @@ function Timesheet(props: TimesheetProps) {
     });
 
     setEntries(updatedEntries);
-  }
+  };
 
   // Refactor does not need to iterate on all entries for updating
-  function hoursChangeHandler(
+  const hoursChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
     entryId: string
-  ) {
+  ) => {
     const updatedEntries = entries.map((entry) => {
       if (entry.id === entryId) {
         const updatedItem = {
@@ -133,9 +133,9 @@ function Timesheet(props: TimesheetProps) {
     });
 
     setEntries(updatedEntries);
-  }
+  };
 
-  function saveHandler(event: React.MouseEvent) {
+  const saveHandler = (event: React.MouseEvent): void => {
     event.preventDefault();
 
     let entriesToSave: entry[] = entries.map((entry) => {
@@ -159,9 +159,12 @@ function Timesheet(props: TimesheetProps) {
       .catch((error) => {
         console.log('error', error);
       });
-  }
+  };
 
-  function snackBarCloseHandler(event?: React.SyntheticEvent, reason?: string) {
+  const snackBarCloseHandler = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
     console.log(reason);
     // we received a default value of 'clickaway'
     if (reason === 'clickaway') {
@@ -169,7 +172,7 @@ function Timesheet(props: TimesheetProps) {
     } //else reason = timeout, close the snackbar
 
     setIsSnackBarOpen(false);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -236,6 +239,6 @@ function Timesheet(props: TimesheetProps) {
       </div>
     </React.Fragment>
   );
-}
+};
 
 export default Timesheet;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Navigation(props: any) {
+const Navigation: React.FC = (props: any) => {
   return (
     <div style={{ background: 'navyblue' }}>
       <ul>
@@ -16,6 +16,6 @@ function Navigation(props: any) {
       </ul>
     </div>
   );
-}
+};
 
 export default Navigation;

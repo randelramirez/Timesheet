@@ -20,7 +20,9 @@ export type TimesheetEntryProps = {
   hoursChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function TimesheetEntry(props: TimesheetEntryProps) {
+const TimesheetEntry: React.FC<TimesheetEntryProps> = (
+  props: TimesheetEntryProps
+) => {
   return (
     <div style={{ margin: '5px' }}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -87,6 +89,6 @@ function TimesheetEntry(props: TimesheetEntryProps) {
       </Button>
     </div>
   );
-}
+};
 
 export default TimesheetEntry;

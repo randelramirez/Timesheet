@@ -1,8 +1,17 @@
 import React from 'react';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import { type } from 'os';
 
-function SavedNotification(props: any) {
+type SavedNotificationProps = {
+  duration: number;
+  open: boolean;
+  onClose: any;
+  message: string;
+  notificationKey: any;
+};
+
+const SavedNotification: React.FC<SavedNotificationProps> = (props) => {
   return (
     <Snackbar
       autoHideDuration={props.duration}
@@ -14,6 +23,6 @@ function SavedNotification(props: any) {
       <MuiAlert elevation={6} children={props.message} variant="filled" />
     </Snackbar>
   );
-}
+};
 
 export default SavedNotification;

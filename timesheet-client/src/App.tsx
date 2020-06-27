@@ -7,7 +7,7 @@ import Timesheet from './containers/Timesheet/Timesheet';
 import Login from './containers/Login/Login';
 import MainPage from './containers/MainPage/MainPage';
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
@@ -17,6 +17,6 @@ function App() {
       </Switch>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

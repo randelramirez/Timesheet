@@ -4,7 +4,7 @@ type AddButtonProps = {
   addHandler: (event: React.MouseEvent) => void;
 };
 
-function AddButton(props: AddButtonProps) {
+const AddButton: React.FC<AddButtonProps> = (props: AddButtonProps) => {
   return (
     <button type="button" onClick={props.addHandler}>
       <span role="img" aria-label="add">
@@ -12,6 +12,6 @@ function AddButton(props: AddButtonProps) {
       </span>
     </button>
   );
-}
+};
 
 export default AddButton;
