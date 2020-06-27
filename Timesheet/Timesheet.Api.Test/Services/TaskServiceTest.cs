@@ -13,7 +13,7 @@ namespace Timesheet.Api.Test.Services
     public class TaskServiceTest
     {
         [Fact]
-        public async System.Threading.Tasks.Task GetAll_ReturnsAllRows()
+        public async System.Threading.Tasks.Task GetAll_ReturnsAllData()
         {
             var options = new DbContextOptionsBuilder<TimesheetContext>()
                 .UseInMemoryDatabase(databaseName: "Timesheet").Options;
