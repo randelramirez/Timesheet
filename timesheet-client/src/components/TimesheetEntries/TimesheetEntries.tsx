@@ -12,7 +12,9 @@ export type TimesheetEntriesProps = {
   taskCodeChangeHandler: any;
 };
 
-function TimesheetEntries(props: TimesheetEntriesProps) {
+const TimesheetEntries: React.FC<TimesheetEntriesProps> = (
+  props: TimesheetEntriesProps
+) => {
   const controls: JSX.Element[] = props.entries.map(
     (entry: entry, index: number) => {
       return (
@@ -40,6 +42,6 @@ function TimesheetEntries(props: TimesheetEntriesProps) {
 
   // A component can only return 1 parent container, we use Fragrament to circumvent that
   return <React.Fragment>{controls}</React.Fragment>;
-}
+};
 
 export default TimesheetEntries;

@@ -16,7 +16,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../../components/Copyright/Copyright';
 
 // move this to its own component folder & file
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -52,26 +51,30 @@ const useStyles = makeStyles((theme) => ({
 
 type LoginProps = { name: string };
 
-function Login(props: RouteComponentProps & LoginProps) {
+const Login: React.FC<RouteComponentProps & LoginProps> = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function onEmailChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  const onEmailChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setEmail(event.target.value);
-  }
+  };
 
-  function onPasswordChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  const onPasswordChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setPassword(event.target.value);
-  }
+  };
 
-  function loginHandler(event: React.MouseEvent): void {
+  const loginHandler = (event: React.MouseEvent): void => {
     event.preventDefault();
     if (email === 'randelramirez1@gmail.com' && password === 'Randel1_23') {
       props.history.replace('/main/');
     }
 
     return;
-  }
+  };
 
   const classes = useStyles();
 
@@ -146,5 +149,5 @@ function Login(props: RouteComponentProps & LoginProps) {
       </Grid>
     </Grid>
   );
-}
+};
 export default Login;

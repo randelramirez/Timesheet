@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 
 type AnimationContainerProps = {};
 
-function AnimationContainer(props: any) {
+const AnimationContainer: React.FC = (props: any) => {
   const nodeRef = React.useRef(null);
   return (
     <CSSTransition
@@ -15,6 +15,6 @@ function AnimationContainer(props: any) {
       <div ref={nodeRef}>{props.children}</div>
     </CSSTransition>
   );
-}
+};
 
 export default AnimationContainer;

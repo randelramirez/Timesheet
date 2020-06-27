@@ -4,7 +4,9 @@ export type DeleteButtonProps = {
   deleteHandler: (event: React.MouseEvent) => void;
 };
 
-function DeleteButton(props: DeleteButtonProps) {
+const DeleteButton: React.FC<DeleteButtonProps> = (
+  props: DeleteButtonProps
+) => {
   return (
     <button onClick={props.deleteHandler} type="button">
       <span role="img" aria-label="delete">
@@ -12,6 +14,6 @@ function DeleteButton(props: DeleteButtonProps) {
       </span>
     </button>
   );
-}
+};
 
 export default DeleteButton;
