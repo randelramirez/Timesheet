@@ -9,13 +9,13 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Timesheet.Api.Services
 {
-    public class TimecardService : IGetAll<Core.Timecard>
+    public class TimecardService : IGetAll<Core.Timecard>, IGet<Timecard>
     {
         private readonly TimesheetContext context;
 
         public TimecardService(TimesheetContext context)
         {
-            this.context = context;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<Timecard>> GetAllAsync()
@@ -32,6 +32,11 @@ namespace Timesheet.Api.Services
         {
             await this.context.Timecards.AddRangeAsync(timecards);
             await this.context.SaveChangesAsync();
+        }
+
+        public async Task<Timecard> GetAsync(int id)
+        {
+            return await this.context.Timecards.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
         }
     }
 }

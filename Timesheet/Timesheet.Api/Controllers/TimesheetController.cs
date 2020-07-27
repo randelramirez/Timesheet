@@ -22,13 +22,14 @@ namespace Timesheet.Api.Controllers
 
         public TimesheetController(LinkGenerator linkGenerator, TimecardService service)
         {
-            this.linkGenerator = linkGenerator;
-            this.service = service;
+            this.linkGenerator = linkGenerator ?? throw new ArgumentNullException(nameof(linkGenerator));
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         // GET: api/<TimesheetController>
 
         [HttpGet] // the actions are the actual endpoints
+        [HttpHead]
         public async Task<ActionResult<Timesheet.Core.Timecard[]>> Get()
         {
             try
@@ -45,9 +46,15 @@ namespace Timesheet.Api.Controllers
 
         // GET api/<TimesheetController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Core.Timecard>> Get(int id)
         {
-            return "value";
+            var timecard = await this.service.GetAsync(id);
+            if (await this.service.GetAsync(id) != null)
+            {
+                return Ok(timecard);
+            }
+
+            return NotFound();
         }
 
         // POST api/<TimesheetController>

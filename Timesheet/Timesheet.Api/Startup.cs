@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -50,11 +51,11 @@ namespace Timesheet.Api
                         });
             });
 
-            services.AddControllers(configure => {
+            services.AddControllers(options => {
 
                 // default is false
                 // if the accept-header is not supported, we do not return the default(which is json), we return 406 
-                configure.ReturnHttpNotAcceptable = true;
+                options.ReturnHttpNotAcceptable = true;
 
             }).AddXmlDataContractSerializerFormatters(); // add xml, note that json is still the default
         }
@@ -66,6 +67,18 @@ namespace Timesheet.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.SeedDataTimesheetContext();
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    // Customize the message display when internal server error happens
+                    appBuilder.Run(async context =>
+                    {
+                        // log error here
+                        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+                    });
+                });
             }
 
             app.UseHttpsRedirection();
