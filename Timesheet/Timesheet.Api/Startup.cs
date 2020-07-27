@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +49,14 @@ namespace Timesheet.Api
                                 .WithHeaders("Content-Type");
                         });
             });
-            services.AddControllers();
+
+            services.AddControllers(configure => {
+
+                // default is false
+                // if the accept-header is not supported, we do not return the default(which is json), we return 406 
+                configure.ReturnHttpNotAcceptable = true;
+
+            }).AddXmlDataContractSerializerFormatters(); // add xml, note that json is still the default
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
