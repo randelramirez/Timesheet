@@ -178,7 +178,16 @@ function Timesheet(props: TimesheetProps) {
         isLoggedinRender={<Navigation />}
         isLoggedoutRender={<div>logged out</div>}
       />
-      <div style={{ textAlign: 'center', width: '80%', margin: 'auto' }}>
+      <div
+        style={{
+          textAlign: 'center',
+          width: '80%',
+          margin: 'auto',
+          backgroundColor: 'lightcyan',
+          boxShadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.5)',
+          borderRadius: '10px',
+        }}
+      >
         <Button
           style={{ position: 'relative', right: '-400px', marginTop: '10px' }}
           variant="contained"
@@ -190,8 +199,13 @@ function Timesheet(props: TimesheetProps) {
         >
           Add
         </Button>
-        <form>
-          <fieldset>
+        <form style={{ padding: '10px' }}>
+          <fieldset
+            style={{
+              borderRadius: '10px',
+              boxShadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.5)',
+            }}
+          >
             <legend>Timesheet</legend>
             {/*use css for styling, remove br */}
             <br />
