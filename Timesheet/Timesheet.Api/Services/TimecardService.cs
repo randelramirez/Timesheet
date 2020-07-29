@@ -23,6 +23,11 @@ namespace Timesheet.Api.Services
             return await this.context.Timecards.ToListAsync();
         }
 
+        public async Task<IEnumerable<Timecard>> GetAllAsync(IEnumerable<int> ids)
+        {
+            return await this.context.Timecards.Where(t => ids.Contains(t.Id)).ToListAsync();
+        }
+
         public async Task<IEnumerable<Timecard>> GetAllByDateRange(DateTime fromDate, DateTime toDate)
         {
             return await this.context.Timecards.Where(t => t.Date >= fromDate && t.Date <= toDate).ToListAsync();

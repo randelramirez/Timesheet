@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Timesheet.Infrastructure.Persistence;
 
@@ -13,6 +14,11 @@ namespace Timesheet.Api.Services
         public TaskService(TimesheetContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<IEnumerable<Core.Task>> GetAllAsync(IEnumerable<int> ids)
+        {
+            return await this.context.Tasks.Where(t => ids.Contains(t.Id)).ToListAsync();
         }
 
         public async Task<IEnumerable<Core.Task>> GetAllAsync()
@@ -29,6 +35,6 @@ namespace Timesheet.Api.Services
         public async Task<Core.Task> GetAsync(int id)
         {
             return await this.context.Tasks.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
-        }
+        }  
     }
 }
