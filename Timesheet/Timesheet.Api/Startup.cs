@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,12 +53,54 @@ namespace Timesheet.Api
             });
 
             services.AddControllers(options => {
-
                 // default is false
                 // if the accept-header is not supported, we do not return the default(which is json), we return 406 
                 options.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters()// add xml, note that json is still the default
+              .ConfigureApiBehaviorOptions(options =>
+              {
+                  options.InvalidModelStateResponseFactory = context =>
+                  {
+                      // create a problem details object
+                      var problemDetailsFactory = context.HttpContext.RequestServices
+                          .GetRequiredService<ProblemDetailsFactory>();
+                      var problemDetails = problemDetailsFactory.CreateValidationProblemDetails(
+                              context.HttpContext,
+                              context.ModelState);
 
-            }).AddXmlDataContractSerializerFormatters(); // add xml, note that json is still the default
+                      // add additional info not added by default
+                      problemDetails.Detail = "See the errors field for details.";
+                      problemDetails.Instance = context.HttpContext.Request.Path;
+
+                      // find out which status code to use
+                      var actionExecutingContext =
+                            context as Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext;
+
+                      // if there are modelstate errors & all keys were correctly
+                      // found/parsed we're dealing with validation errors
+                      if ((context.ModelState.ErrorCount > 0) &&
+                          (actionExecutingContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count))
+                      {
+                          problemDetails.Type = "https://Timesheet.com/modelvalidationproblem";
+                          problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                          problemDetails.Title = "One or more validation errors occurred.";
+
+                          return new UnprocessableEntityObjectResult(problemDetails)
+                          {
+                              ContentTypes = { "application/problem+json" }
+                          };
+                      }
+
+                      // if one of the keys wasn't correctly found / couldn't be parsed
+                      // we're dealing with null/unparsable input
+                      problemDetails.Status = StatusCodes.Status400BadRequest;
+                      problemDetails.Title = "One or more errors on input occurred.";
+                      return new BadRequestObjectResult(problemDetails)
+                      {
+                          ContentTypes = { "application/problem+json" }
+                      };
+                  };
+              }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
