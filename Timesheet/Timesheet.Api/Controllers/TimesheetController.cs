@@ -59,11 +59,23 @@ namespace Timesheet.Api.Controllers
             return NotFound();
         }
 
-        [HttpGet("({ids})",Name = nameof(TimesheetController.GetTimecards))]
+        [HttpGet("({ids})", Name = nameof(TimesheetController.GetTimecards))]
         public async Task<ActionResult<Core.Timecard>> GetTimecards([FromRoute]
         [ModelBinder(BinderType = typeof(CommaSeparatedModelBinder))] IEnumerable<int> ids)
         {
+            if(ids == null)
+            {
+                return BadRequest();
+            }
+
             var timecards = await this.service.GetAllAsync(ids);
+
+            if(ids.Count() != timecards.Count())
+            {
+                // We return all, of if any is missing, we return not found
+                return NotFound();
+            }
+
             return Ok(timecards);
         }
 
