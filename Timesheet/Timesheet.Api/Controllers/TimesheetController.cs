@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.AspNetCore.Routing;
 using Timesheet.Api.Helpers;
 using Timesheet.Api.Services;
@@ -81,7 +80,7 @@ namespace Timesheet.Api.Controllers
 
         // POST api/<TimesheetController>
         [HttpPost]
-        public async Task<ActionResult<Core.Timecard>> Post([FromBody] IEnumerable<TimecardViewModel> timecards)
+        public async Task<ActionResult<Core.Timecard>> Post([FromBody] IEnumerable<CreateTimecardViewModel> timecards)
         {
             var timecardModels = timecards.ToTimecardEntities().ToList();
             //var url = this.linkGenerator.GetPathByAction(HttpContext, "Get", values: new { timecards = timecardModels });
@@ -102,6 +101,15 @@ namespace Timesheet.Api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpOptions]
+        public IActionResult GetTimesheetOptions()
+        {
+            Response.Headers.Add("Allow", string.Join(',',"GET", "OPTIONS", "POST","DELETE"));
+            
+            // provide response body(not covered by http standard)
+            return Ok();
         }
     }
 }

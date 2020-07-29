@@ -16,9 +16,24 @@ namespace Timesheet.Api.ViewModels.Extensions
             };
         }
 
+        public static CreateTimecardViewModel ToCreateViewModel(this Core.Timecard model)
+        {
+            return new CreateTimecardViewModel
+            {
+                Date = model.Date,
+                Hours = model.Hours,
+                TaskId = model.TaskId
+            };
+        }
+
         public static IEnumerable<TimecardViewModel> ToViewModels(this IEnumerable<Core.Timecard> model)
         {
             return model.Select(t => t.ToViewModel());
+        }
+
+        public static IEnumerable<CreateTimecardViewModel> ToCreateViewModels(this IEnumerable<Core.Timecard> model)
+        {
+            return model.Select(t => t.ToCreateViewModel());
         }
     }
 }
