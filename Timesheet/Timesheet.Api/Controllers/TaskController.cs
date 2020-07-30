@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using Timesheet.Api.Services;
+using Timesheet.Api.ViewModels;
 using Timesheet.Api.ViewModels.Extensions;
 
 namespace Timesheet.Api.Controllers
@@ -36,6 +42,49 @@ namespace Timesheet.Api.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Core.Task[]>> Post(Core.Task model)
+        {
+            model.Id = 0;
+           
+            await this.service.Add(model);
+            return CreatedAtRoute(nameof(TaskController.Get), new { id = model.Id });
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Core.Task[]>> Put(Core.Task model)
+        {
+            model.Id = 0;
+
+            await this.service.Add(model);
+            return NoContent();
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult<Core.Task[]>> Patch(JsonPatchDocument<UpdateTaskViewModel> patchDocument)
+        {
+            //model.Id = 0;
+
+            //await this.service.Add(model);
+            //return CreatedAtRoute(nameof(TaskController.Get), new { id = model.Id });
+            var model = new UpdateTaskViewModel();
+            patchDocument.ApplyTo(model,ModelState);
+
+            if(!TryValidateModel(model))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            return NoContent();
+        }
+
+        public override ActionResult ValidationProblem([ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            // So we don't need to write a logic, we get the same logic/code from Startup.cs ApiBehaviorOptions
+            var options = HttpContext.RequestServices.GetRequiredService<IOptions<ApiBehaviorOptions>>();
+            return (options.Value.InvalidModelStateResponseFactory(this.ControllerContext) as ActionResult);
         }
     }
 }

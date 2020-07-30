@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using Timesheet.Api.Services;
 using Timesheet.Infrastructure.Persistence;
 
@@ -56,7 +57,14 @@ namespace Timesheet.Api
                 // default is false
                 // if the accept-header is not supported, we do not return the default(which is json), we return 406 
                 options.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters()// add xml, note that json is still the default
+            })
+            // We need to add NewtonsoftJson for Newtonsoft, because the default JSON serializer is not yet compatible with patch document as of today
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            })
+            // We have to move AddXmlDataContractSerializerFormatters after AddNewtonsoftJson, because if we don't it will override the default JSON as response(XML will be returned if no accept header is supplied)
+            .AddXmlDataContractSerializerFormatters()// add xml, note that json is still the default
               .ConfigureApiBehaviorOptions(options =>
               {
                   options.InvalidModelStateResponseFactory = context =>
