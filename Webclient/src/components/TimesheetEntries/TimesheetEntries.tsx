@@ -12,25 +12,25 @@ export type TimesheetEntriesProps = {
   taskCodeChangeHandler: any;
 };
 
-function TimesheetEntries(props: TimesheetEntriesProps) {
-  const controls: JSX.Element[] = props.entries.map(
+export default function TimesheetEntries({entries, taskOptions, deleteHandler, hoursChangeHandler, taskCodeChangeHandler, dateChangeHandler}: TimesheetEntriesProps) {
+  const controls: JSX.Element[] = entries.map(
     (entry: entry, index: number) => {
       return (
         <AnimationContainer key={entry.id}>
           <TimesheetEntry
-            taskOptions={props.taskOptions || []}
+            taskOptions={taskOptions || []}
             deleteHandler={(event) => {
-              props.deleteHandler(event, entry.id.toString());
+              deleteHandler(event, entry.id.toString());
             }}
             data={entry}
             dateChangeHandler={(date: Date) =>
-              props.dateChangeHandler(date, entry.id)
+              dateChangeHandler(date, entry.id)
             }
             hoursChangeHandler={(event) =>
-              props.hoursChangeHandler(event, entry.id)
+              hoursChangeHandler(event, entry.id)
             }
             taskCodeChangeHandler={(event, value) =>
-              props.taskCodeChangeHandler(event, value, entry.id)
+              taskCodeChangeHandler(event, value, entry.id)
             }
           />
         </AnimationContainer>
@@ -41,5 +41,3 @@ function TimesheetEntries(props: TimesheetEntriesProps) {
   // A component can only return 1 parent container, we use Fragrament to circumvent that
   return <React.Fragment>{controls}</React.Fragment>;
 }
-
-export default TimesheetEntries;
