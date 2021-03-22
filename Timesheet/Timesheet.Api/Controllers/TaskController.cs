@@ -63,7 +63,7 @@ namespace Timesheet.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult<Core.Task[]>> Patch(JsonPatchDocument<UpdateTaskViewModel> patchDocument)
+        public ActionResult<Core.Task[]> Patch(JsonPatchDocument<UpdateTaskViewModel> patchDocument)
         {
             //model.Id = 0;
 
