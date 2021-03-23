@@ -43,7 +43,7 @@ namespace Timesheet.Api.ViewModels
             if (Hours == 0 || Hours < 0)
             {
                 // yield return ensures validation is returned immediately
-                yield return new ValidationResult("Hours cannot be 0 or  ➖NegativeNegative", new[] { nameof(CreateTimecardViewModel) });
+                yield return new ValidationResult("Hours cannot be 0 or  ➖Negative", new[] { nameof(CreateTimecardViewModel) });
             }
         }
     }
