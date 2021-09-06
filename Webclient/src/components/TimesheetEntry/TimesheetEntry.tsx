@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IEntry, ITask } from "../../containers/Timesheet/Timesheet";
@@ -15,24 +15,16 @@ export interface ITimesheetEntryProps {
   data: IEntry;
   taskOptions: ITask[];
   deleteHandler: (event: React.MouseEvent) => void;
-  onChange: (value: IEntry) => void;
+  onChangeHandler: (value: IEntry) => void;
 }
 
 function TimesheetEntry({
   data,
   deleteHandler,
   taskOptions,
-  onChange,
+  onChangeHandler,
 }: ITimesheetEntryProps) {
   const [dataValue, setDataValue] = useState(data);
-  // const memoized = useCallback(() => onChange(dataValue), [
-  //   dataValue,
-  //   onChange,
-  // ]);
-
-  useEffect(() => {
-    onChange(dataValue);
-  }, [dataValue]);
 
   return (
     <div style={{ margin: "5px" }}>
