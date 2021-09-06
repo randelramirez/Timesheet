@@ -17,6 +17,7 @@ namespace Timesheet.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Timecard>().HasKey(tc => tc.Id);
+            modelBuilder.Entity<Timecard>().Property(p => p.Hours).HasColumnType("decimal(18,1)");
 
             modelBuilder.Entity<Task>().HasKey(t => t.Id);
 
