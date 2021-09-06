@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 import { TransitionGroup } from "react-transition-group";
 import { v4 as uuid } from "uuid";
 import Button from "@material-ui/core/Button";
@@ -10,6 +10,7 @@ import IsAuthenticated from "../IsAuthenticated/IsAuthenticated";
 import Navigation from "../Navigation/Navigation";
 import SavedNotification from "../../components/UI/Notification/SavedNotification";
 import TimesheetEntries from "../../components/TimesheetEntries/TimesheetEntries";
+import { Http2ServerRequest } from "http2";
 
 export interface IEntry {
   id: string | number;
@@ -54,7 +55,7 @@ function Timesheet(props: ITimesheetProps) {
       });
   }, []);
 
-  function addHandler(event: MouseEvent) {
+  function addHandler(event: React.SyntheticEvent<HTMLButtonElement>) {
     event.preventDefault();
     let updatedEntries = [
       ...entries,
@@ -141,7 +142,6 @@ function Timesheet(props: ITimesheetProps) {
         }}
       >
         <Button
-          style={{ position: "relative", right: "-400px", marginTop: "10px" }}
           variant="contained"
           color="secondary"
           size="small"

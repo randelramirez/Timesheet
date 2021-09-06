@@ -23,7 +23,6 @@ export default function TimesheetEntries({
           <TimesheetEntry
             data={entry}
             taskOptions={taskOptions || []}
-            onChange={onChange}
             deleteHandler={deleteHandler}
           />
         </AnimationContainer>

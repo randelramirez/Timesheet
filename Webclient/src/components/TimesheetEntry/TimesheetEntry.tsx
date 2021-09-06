@@ -15,14 +15,12 @@ export interface ITimesheetEntryProps {
   data: IEntry;
   taskOptions: ITask[];
   deleteHandler: (event: React.MouseEvent) => void;
-  onChangeHandler: (value: IEntry) => void;
 }
 
 function TimesheetEntry({
   data,
   deleteHandler,
   taskOptions,
-  onChangeHandler,
 }: ITimesheetEntryProps) {
   const [dataValue, setDataValue] = useState(data);
 
