@@ -35,7 +35,7 @@ function TimesheetEntry({
   }, [dataValue]);
 
   return (
-    <div style={{ margin: "5px" }} className="bg-black">
+    <div style={{ margin: "5px" }}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           label="Date"
@@ -57,7 +57,6 @@ function TimesheetEntry({
           }}
         />
       </MuiPickersUtilsProvider>
-
       <Autocomplete
         size="small"
         defaultValue={taskOptions.find((t) => t.id === data.taskId)}
@@ -80,7 +79,6 @@ function TimesheetEntry({
           <TextField {...params} label="Task" variant="outlined" />
         )}
       />
-
       <TextField
         size="small"
         style={{ marginRight: "15px", height: "20px" }}
@@ -95,7 +93,6 @@ function TimesheetEntry({
           shrink: true,
         }}
       />
-
       <Button
         style={{ marginRight: "15px", verticalAlign: "bottom" }}
         variant="contained"
