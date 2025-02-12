@@ -1,7 +1,6 @@
 services:
 
   sqlserver-api-timesheet:
-    container_name: timesheet
     image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
       # port 5432 on localhost, and port 5432 on docker container
